@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>破烂计算器</title>
+    <title>破烂计算器(贝塔)</title>
     <style>
         body{
             font-family: Arial, "Microsoft YaHei";
@@ -81,7 +81,7 @@
         var flag = false;
         var obj = document.getElementById("getName");
         var num = obj.options[obj.selectedIndex].value;
-        if(num > "36" || num < "1")
+        if(num == "0")
         flag = true;
         if(num == "1")
         weight = "709" , arm = "0.209", index = "148.048";
@@ -158,7 +158,7 @@
         //bag weight
         var obj2 = document.getElementById("getWeight");
         var num2 = obj2.options[obj2.selectedIndex].value;
-        if(num2 > "4" || num2 < "1")
+        if(num2 == "0")
         flag = true;
         if(num2 == "1")
         bagwe = "0";
@@ -360,7 +360,7 @@
     
     <form style="text-aline: center; ">
         <select name="name" id = "getName">
-            <option selected value = ></option>
+            <option selected value = "0" ></option>
             <option value="1">AWX</option>
             <option value="2">AYX</option>
             <option value="3">BAW</option>
@@ -405,7 +405,7 @@
     
     <form style="text-aline: center; ">
         <select name="name" id = "getWeight">
-            <option selected value = ></option>
+            <option selected value = "0"></option>
             <option value="1">0KG</option>
             <option value="2">5KG</option>
             <option value="3">10KG</option>

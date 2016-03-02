@@ -1,329 +1,485 @@
 <!DOCTYPE html PUBLIC>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>破烂计算器</title>
-<style> 
-body{
-	font-family: Arial, "Microsoft YaHei";
-	text-align: center;
-	float: center;
-}
-
-h1{
-font-size: 2em;
-line-height: 2.4em;
-color: #A63;
-}
-
-h6{
-font-size: 0.7em;
-line-height: 0em;
-color: red;
-}
-
-</style>
-
-<script>
-function accAdd(arg1,arg2){
- var r1,r2,m;
- try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0};
- try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0};
- m=Math.pow(10,Math.max(r1,r2));
- return (arg1*m+arg2*m)/m;
-}
-
-function Subtr(arg1,arg2){
- var r1,r2,m,n;
- try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0};
- try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0};
- m=Math.pow(10,Math.max(r1,r2));
- //last modify by deeka
- //动态控制精度长度
- n=(r1>=r2)?r1:r2;
- return ((arg1*m-arg2*m)/m).toFixed(n);
-}
-
-function accMul(arg1,arg2)
-{
- var m=0,s1=arg1.toString(),s2=arg2.toString();
- try{m+=s1.split(".")[1].length}catch(e){};
- try{m+=s2.split(".")[1].length}catch(e){};
- return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m);
-}
-
-function accDiv(arg1,arg2){
- var t1=0,t2=0,r1,r2;
- try{t1=arg1.toString().split(".")[1].length}catch(e){};
- try{t2=arg2.toString().split(".")[1].length}catch(e){};
- with(Math){
-  r1=Number(arg1.toString().replace(".",""));
-  r2=Number(arg2.toString().replace(".",""));
-  return (r1/r2)*pow(10,t2-t1);
- }
-}
-
-var weight,arm,paswe,fucos,bagwe,fuqua,index,fuelcos2;
-function gettype()
-{
-	var flag = false;
-	var obj = document.getElementById("getName");
-	var num = obj.options[obj.selectedIndex].value;
-	if(num > "4" || num < "1")
-		flag = true;
-	if(num == "1")
-		weight = "701" , arm = "0.218", index = "152.818";
-	//bag weight
-	var obj2 = document.getElementById("getWeight");
-	var num2 = obj2.options[obj2.selectedIndex].value;
-	if(num2 > "4" || num2 < "1")
-		flag = true;
-	if(num2 == "1")
-		bagwe = "0";
-	if(num2 == "2")
-		bagwe = "5";
-	if(num2 == "3")
-		bagwe = "10";
-	if(num2 == "4")
-		bagwe = "15";
-	//passenger weight
-	var num3 = document.getElementById("pasWeight").value;
-	paswe = num3;
-	if(num3 == "")
-		flag = true;
-	//fuel burn
-	var num4 = document.getElementById("fuelCos").value;
-	fucos = num4;
-	if(num4 == "")
-		flag = true;
-	//fuel quantity
-	var obj3 = document.getElementById("getFuel");
-	var num5 = obj3.options[obj3.selectedIndex].value;
-	if(num5 == "1")
-		fuqua = "103";
-	if(num5 == "2")
-		flag = true;
-	//fuelcos2
-	var num6 = document.getElementById("fuelCos2").value;
-	fuelcos2 = num6;
-	//flag
-	if(flag == true)
-		alert("请输入完整");
-	else
-		calc();
-}
-
-function ldg2out()
-{
-}
-
-function calc()
-{
-	//calc
-	document.write('<table align="center" width="500">');
-	document.write("<tr><th>Station</th> <th>Weight</th> <th>Arm</th> <th>Index Units</th></tr>");
-    bg="#cccccc";
-	document.write('<tr align="center" bgcolor="'+ bg +'">'); 
-	document.write('<td>' + "BEW" + '</td>');
-	document.write('<td>' + weight + '</td>');
-	document.write('<td>' + arm + '</td>');
-	document.write('<td>' + index + '</td>');
-	document.write('</tr>');
+    <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>破烂计算器(贝塔0.13)</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+   
+    <style>
+        body{
+            font-family: Arial, "Microsoft YaHei";
+            text-align: center;
+            float: center;
+        }
+    
+    h1{
+        font-size: 2.5em;
+        color: #A63;
+		line-height: 0.8em;
+    }
+    
+    h6{
+        font-size: 0.8em;
+        line-height: 0.5em;
+		color: red
+    }
+    
+    p>input{
+        height: 2.5em;
+        width: 14em;
+        font-size: 1em;
+        background-color: #A63;
+        font-family: Arial, "Microsoft YaHei";
+        color: #FFF;
+        margin-left: auto;
+        margin-right: auto;
+        border: 0px;
+        border-radius: 1.2em
+    }
 	
-	//line2
-	var pasindex;
-	pasindex = accMul(paswe,0.25);
-    bg="#ffffff";   
-	document.write('<tr align="center" bgcolor="'+ bg +'">'); 
-	document.write('<td>' + "ROW1" + '</td>');
-	document.write('<td>' + paswe + '</td>');
-	document.write('<td>' + "0.250" + '</td>');
-	document.write('<td>' + pasindex + '</td>');
-	document.write('</tr>');
-	
-	//line3
-	var bagindex;
-	bagindex = accMul(bagwe,0.99);
-    bg="#cccccc";
-	document.write('<tr align="center" bgcolor="'+ bg +'">'); 
-	document.write('<td>' + "Baggage" + '</td>');
-	document.write('<td>' + bagwe + '</td>');
-	document.write('<td>' + "0.990" + '</td>');
-	document.write('<td>' + bagindex + '</td>');
-	document.write('</tr>');
-	
-	//line4
-	var zfw = accAdd(weight,paswe);
-	zfw = accAdd(zfw,bagwe);
-	var zfwindex = accAdd(index,pasindex);
-	zfwindex = accAdd(zfwindex,bagindex);
-	var zfwarm = accDiv(zfwindex,zfw).toFixed(3);
-    bg="#ffffff";
-	document.write('<tr align="center" bgcolor="'+ bg +'">');
-	document.write('<td>' + "ZFW" + '</td>');
-	document.write('<td>' + zfw + '</td>');
-	document.write('<td>' + zfwarm + '</td>');
-	document.write('<td>' + zfwindex + '</td>');
-	document.write('</tr>');
-	
-	//line5
-	var fuel = fuqua;
-	var fuelarm = "0.335";
-	var fuelindex = accMul(fuel,fuelarm);
-	bg="#cccccc";
-	document.write('<tr align="center" bgcolor="'+ bg +'">');
-	document.write('<td>' + "Fuel" + '</td>');
-	document.write('<td>' + fuel + '</td>');
-	document.write('<td>' + fuelarm + '</td>');
-	document.write('<td>' + fuelindex + '</td>');
-	document.write('</tr>');
-	
-	//line6
-	var ramp = accAdd(fuel,zfw);
-	var rampindex = accAdd(fuelindex,zfwindex);
-	var ramparm = accDiv(rampindex,ramp).toFixed(3);
-	bg="#ffffff";
-	document.write('<tr align="center" bgcolor="'+ bg +'">');
-	document.write('<td>' + "Ramp Weight" + '</td>');
-	document.write('<td>' + ramp + '</td>');
-	document.write('<td>' + ramparm + '</td>');
-	document.write('<td>' + rampindex + '</td>');
-	document.write('</tr>');
-	
-	//line7
-	var ramp = Subtr(ramp,"4");
-	var rampindex = Subtr(rampindex,"1.34");
-	bg="#cccccc";
-	document.write('<tr align="center" bgcolor="'+ bg +'">');
-	document.write('<td>' + "Taxi&Run-Up" + '</td>');
-	document.write('<td>' + "-4" + '</td>');
-	document.write('<td>' + "0.335" + '</td>');
-	document.write('<td>' + "-1.34" + '</td>');
-	document.write('</tr>');
-	
-	//line8
-	var tow = ramp;
-	var towindex = rampindex;
-	var towarm = accDiv(rampindex,ramp).toFixed(3);
-    bg="#ffffff"; 
-	document.write('<tr align="center" bgcolor="'+ bg +'">');
-	document.write('<td>' + "TOW" + '</td>');
-	document.write('<td>' + tow + '</td>');
-	document.write('<td>' + towarm + '</td>');
-	document.write('<td>' + towindex + '</td>');
-	document.write('</tr>');
-	
-	//line9
-	var fucosarm = "0.335"
-	var fucosindex = accMul(fucos,fucosarm);
-	bg="#cccccc";
-	document.write('<tr align="center" bgcolor="'+ bg +'">');
-	document.write('<td>' + "Fuel Burn" + '</td>');
-	document.write('<td>' + "-" + fucos + '</td>');
-	document.write('<td>' + fucosarm + '</td>');
-	document.write('<td>' + fucosindex + '</td>');
-	document.write('</tr>');
-	
-	//line10
-	var ldg = Subtr(tow,fucos);
-	var ldgindex = Subtr(towindex,fucosindex);
-	var ldgarm = accDiv(ldgindex,ldg).toFixed(3);
-	bg="#ffffff";      
-	document.write('<tr align="center" bgcolor="'+ bg +'">');
-	document.write('<td>' + "LDG Wt.1" + '</td>');
-	document.write('<td>' + ldg + '</td>');
-	document.write('<td>' + ldgarm + '</td>');
-	document.write('<td>' + ldgindex + '</td>');
-	document.write('</tr>');
-	
-	//line11
-	if(fuelcos2>"0")
-	{
-		var fuelcosarm = "0.335"
-		var fuelcosindex2 = accMul(fuelcos2,fuelcosarm).toFixed(3);
-		bg="#cccccc";
-		document.write('<tr align="center" bgcolor="'+ bg +'">');
-		document.write('<td>' + "Fuel Burn" + '</td>');
-		document.write('<td>' + "-" + fuelcos2 + '</td>');
-		document.write('<td>' + fuelcosarm + '</td>');
-		document.write('<td>' + fuelcosindex2 + '</td>');
-		document.write('</tr>');
-		
-		var ldg2 = Subtr(ldg,fuelcos2);
-		var ldg2index = Subtr(ldgindex,"0.335");
-		var ldg2arm = accDiv(ldg2index,ldg2).toFixed(3);
-		bg="#ffffff";           
-		document.write('<tr align="center" bgcolor="'+ bg +'">');
-		document.write('<td>' + "LDG Wt.2" + '</td>');
-		document.write('<td>' + ldg2 + '</td>');
-		document.write('<td>' + ldg2arm + '</td>');
-		document.write('<td>' + ldg2index + '</td>');
-		document.write('</tr>');
+	button{
+		width:auto
 	}
-	//end
-	document.write('</table>');
-}
-</script>
+    
+        </style>
+    <script>
+        function accAdd(arg1,arg2){
+            var r1,r2,m;
+            try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0};
+            try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0};
+            m=Math.pow(10,Math.max(r1,r2));
+            return (arg1*m+arg2*m)/m;
+        }
+    
+    function Subtr(arg1,arg2){
+        var r1,r2,m,n;
+        try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0};
+        try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0};
+        m=Math.pow(10,Math.max(r1,r2));
+        //last modify by deeka
+        //动态控制精度长度
+        n=(r1>=r2)?r1:r2;
+        return ((arg1*m-arg2*m)/m).toFixed(n);
+    }
+    
+    function accMul(arg1,arg2)
+    {
+        var m=0,s1=arg1.toString(),s2=arg2.toString();
+        try{m+=s1.split(".")[1].length}catch(e){};
+        try{m+=s2.split(".")[1].length}catch(e){};
+        return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m);
+    }
+    
+    function accDiv(arg1,arg2){
+        var t1=0,t2=0,r1,r2;
+        try{t1=arg1.toString().split(".")[1].length}catch(e){};
+        try{t2=arg2.toString().split(".")[1].length}catch(e){};
+        with(Math){
+            r1=Number(arg1.toString().replace(".",""));
+            r2=Number(arg2.toString().replace(".",""));
+            return (r1/r2)*pow(10,t2-t1);
+        }
+    }
+    
+    var weight,arm,paswe,fucos,bagwe,fuqua,index,fuelcos2;
+    function gettype()
+    {
+        var flag = false;
+        var obj = document.getElementById("getName");
+        var num = obj.options[obj.selectedIndex].value;
+        if(num == "0")
+        flag = true;
+        if(num == "1")
+        weight = "709" , arm = "0.209", index = "148.048";
+        if(num == "2")
+        weight = "705" , arm = "0.216", index = "152.524";
+        if(num == "3")
+        weight = "709" , arm = "0.209", index = "148.168";
+        if(num == "4")
+        weight = "715" , arm = "0.209", index = "149.316";
+        if(num == "5")
+        weight = "725" , arm = "0.237", index = "172.076";
+        if(num == "6")
+        weight = "705" , arm = "0.208", index = "146.608";
+        if(num == "7")
+        weight = "715" , arm = "0.225", index = "160.936";
+        if(num == "8")
+        weight = "713" , arm = "0.209", index = "149.294";
+        if(num == "9")
+        weight = "709" , arm = "0.207", index = "146.877";
+        if(num == "10")
+        weight = "709" , arm = "0.208", index = "147.386";
+        if(num == "11")
+        weight = "734" , arm = "0.228", index = "167.747";
+        if(num == "12")
+        weight = "729" , arm = "0.215", index = "157.319";
+        if(num == "13")
+        weight = "729" , arm = "0.205", index = "149.208";
+        if(num == "14")
+        weight = "725" , arm = "0.215", index = "155.611";
+        if(num == "15")
+        weight = "729" , arm = "0.217", index = "185.154";
+        if(num == "16")
+        weight = "708" , arm = "0.211", index = "149.155";
+        if(num == "17")
+        weight = "710" , arm = "0.208", index = "147.822";
+        if(num == "18")
+        weight = "713" , arm = "0.208", index = "147.926";
+        if(num == "19")
+        weight = "721" , arm = "0.207", index = "147.716";
+        if(num == "20")
+        weight = "712" , arm = "0.209", index = "148.568";
+        if(num == "21")
+        weight = "710" , arm = "0.209", index = "148.382";
+        if(num == "22")
+        weight = "711" , arm = "0.208", index = "148.356";
+        if(num == "23")
+        weight = "712" , arm = "0.209", index = "148.511";
+        if(num == "24")
+        weight = "708" , arm = "0.210", index = "149.009";
+        if(num == "25")
+        weight = "705" , arm = "0.210", index = "148.239";
+        if(num == "26")
+        weight = "712" , arm = "0.210", index = "149.432";
+        if(num == "27")
+        weight = "729" , arm = "0.222", index = "161.906";
+        if(num == "28")
+        weight = "709" , arm = "0.207", index = "147.136";
+        if(num == "29")
+        weight = "710" , arm = "0.208", index = "147.664";
+        if(num == "30")
+        weight = "711" , arm = "0.209", index = "148.571";
+        if(num == "31")
+        weight = "710" , arm = "0.208", index = "147.332";
+        if(num == "32")
+        weight = "709" , arm = "0.208", index = "147.218";
+        if(num == "33")
+        weight = "711" , arm = "0.209", index = "148.558";
+        if(num == "34")
+        weight = "708" , arm = "0.209", index = "147.678";
+        if(num == "35")
+        weight = "716" , arm = "0.222", index = "158.804";
+        if(num == "36")
+        weight = "702" , arm = "0.207", index = "145.011";
+        //bag weight
+        var obj2 = document.getElementById("getWeight");
+        var num2 = obj2.options[obj2.selectedIndex].value;
+        if(num2 == "0")
+        flag = true;
+        if(num2 == "1")
+        bagwe = "0";
+        if(num2 == "2")
+        bagwe = "5";
+        if(num2 == "3")
+        bagwe = "10";
+        if(num2 == "4")
+        bagwe = "15";
+        //passenger weight
+        var num3 = document.getElementById("pasWeight").value;
+        paswe = num3;
+        if(num3 == "")
+        flag = true;
+        //fuel burn
+        var num4 = document.getElementById("fuelCos").value;
+        fucos = num4;
+        if(num4 == "")
+        flag = true;
+        //fuel quantity
+        var obj3 = document.getElementById("getFuel");
+        var num5 = obj3.options[obj3.selectedIndex].value;
+        if(num5 == "1")
+        fuqua = "103";
+        if(num5 == "2")
+        flag = true;
+        //fuelcos2
+        var num6 = document.getElementById("fuelCos2").value;
+        fuelcos2 = num6;
+        //flag
+        if(flag == true)
+        {
+            //document.write(num);
+            alert("请输入完整");
+        }
+        else
+        calc();
+    }
+    
+    function ldg2out()
+    {
+    }
+    
+    function calc()
+    {
+        //calc
+        document.write('<table align="center" width="500">');
+        document.write("<tr><th>Station</th> <th>Weight</th> <th>Arm</th> <th>Index Units</th></tr>");
+        bg="#cccccc";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "BEW" + '</td>');
+        document.write('<td>' + weight + '</td>');
+        document.write('<td>' + arm + '</td>');
+        document.write('<td>' + index + '</td>');
+        document.write('</tr>');
+        
+        //line2
+        var pasindex;
+        pasindex = accMul(paswe,0.25);
+        bg="#ffffff";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "ROW1" + '</td>');
+        document.write('<td>' + paswe + '</td>');
+        document.write('<td>' + "0.250" + '</td>');
+        document.write('<td>' + pasindex + '</td>');
+        document.write('</tr>');
+        
+        //line3
+        var bagindex;
+        bagindex = accMul(bagwe,0.99);
+        bg="#cccccc";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "Baggage" + '</td>');
+        document.write('<td>' + bagwe + '</td>');
+        document.write('<td>' + "0.990" + '</td>');
+        document.write('<td>' + bagindex + '</td>');
+        document.write('</tr>');
+        
+        //line4
+        var zfw = accAdd(weight,paswe);
+        zfw = accAdd(zfw,bagwe);
+        var zfwindex = accAdd(index,pasindex);
+        zfwindex = accAdd(zfwindex,bagindex);
+        var zfwarm = accDiv(zfwindex,zfw).toFixed(3);
+        bg="#ffffff";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "ZFW" + '</td>');
+        document.write('<td>' + zfw + '</td>');
+        document.write('<td>' + zfwarm + '</td>');
+        document.write('<td>' + zfwindex + '</td>');
+        document.write('</tr>');
+        
+        //line5
+        var fuel = fuqua;
+        var fuelarm = "0.335";
+        var fuelindex = accMul(fuel,fuelarm);
+        bg="#cccccc";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "Fuel" + '</td>');
+        document.write('<td>' + fuel + '</td>');
+        document.write('<td>' + fuelarm + '</td>');
+        document.write('<td>' + fuelindex + '</td>');
+        document.write('</tr>');
+        
+        //line6
+        var ramp = accAdd(fuel,zfw);
+        var rampindex = accAdd(fuelindex,zfwindex);
+        var ramparm = accDiv(rampindex,ramp).toFixed(3);
+        bg="#ffffff";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "Ramp Weight" + '</td>');
+        document.write('<td>' + ramp + '</td>');
+        document.write('<td>' + ramparm + '</td>');
+        document.write('<td>' + rampindex + '</td>');
+        document.write('</tr>');
+        
+        //line7
+        var ramp = Subtr(ramp,"4");
+        var rampindex = Subtr(rampindex,"1.34");
+        bg="#cccccc";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "Taxi&Run-Up" + '</td>');
+        document.write('<td>' + "-4" + '</td>');
+        document.write('<td>' + "0.335" + '</td>');
+        document.write('<td>' + "-1.34" + '</td>');
+        document.write('</tr>');
+        
+        //line8
+        var tow = ramp;
+        var towindex = rampindex;
+        var towarm = accDiv(rampindex,ramp).toFixed(3);
+        bg="#ffffff";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "TOW" + '</td>');
+        document.write('<td>' + tow + '</td>');
+        document.write('<td>' + towarm + '</td>');
+        document.write('<td>' + towindex + '</td>');
+        document.write('</tr>');
+        
+        //line9
+        var fucosarm = "0.335"
+        var fucosindex = accMul(fucos,fucosarm);
+        bg="#cccccc";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "Fuel Burn" + '</td>');
+        document.write('<td>' + "-" );
+        document.write(fucos + '</td>');
+        document.write('<td>' + fucosarm + '</td>');
+        document.write('<td>' + "-" );
+        document.write( fucosindex + '</td>');
+        document.write('</tr>');
+        
+        //line10
+        var ldg = Subtr(tow,fucos);
+        var ldgindex = Subtr(towindex,fucosindex);
+        var ldgarm = accDiv(ldgindex,ldg).toFixed(3);
+        bg="#ffffff";
+        document.write('<tr align="center" bgcolor="'+ bg +'">');
+        document.write('<td>' + "LDG Wt.1" + '</td>');
+        document.write('<td>' + ldg + '</td>');
+        document.write('<td>' + ldgarm + '</td>');
+        document.write('<td>' + ldgindex + '</td>');
+        document.write('</tr>');
+        
+        //line11
+        if(fuelcos2>"0")
+        {
+            var fuelcosarm = "0.335"
+            var fuelcosindex2 = accMul(fuelcos2,fuelcosarm).toFixed(3);
+            bg="#cccccc";
+            document.write('<tr align="center" bgcolor="'+ bg +'">');
+            document.write('<td>' + "Fuel Burn" + '</td>');
+            document.write('<td>' + "-" + fuelcos2 + '</td>');
+            document.write('<td>' + fuelcosarm + '</td>');
+            document.write('<td>' + "-" );
+            document.write( fuelcosindex2 + '</td>');
+            document.write('</tr>');
+            
+            var ldg2 = Subtr(ldg,fuelcos2);
+            var ldg2index = Subtr(ldgindex,fuelcosindex2);
+            var ldg2arm = accDiv(ldg2index,ldg2).toFixed(3);
+            bg="#ffffff";
+            document.write('<tr align="center" bgcolor="'+ bg +'">');
+            document.write('<td>' + "LDG Wt.2" + '</td>');
+            document.write('<td>' + ldg2 + '</td>');
+            document.write('<td>' + ldg2arm + '</td>');
+            document.write('<td>' + ldg2index + '</td>');
+            document.write('</tr>');
+        }
+        //end
+        document.write('</table>');
+    }
+    </script>
 </head>
 
 <body>
-<h1 style="text-align: center">破烂计算器</h1>
-
-<p style="margin-left: auto; margin-right: auto; text-align:center">
-SELECT Registration Number
-
-<form style="text-aline: center; ">
-<select name="name" id = "getName">
-<option selected value = ></option>
-<option value="1">ABC</option>
-</select>
-</form>
-
-<p style="margin-left: auto; margin-right: auto; text-align:center">
-SELECT Baggage Weight
-
-<form style="text-aline: center; ">
-<select name="name" id = "getWeight">
-<option selected value = ></option>
-<option value="1">0KG</option>
-<option value="2">5KG</option>
-<option value="3">10KG</option>
-<option value="4">15KG</option>
-</select>
-</form>
-
-<form style="text-aline: center;">
-<br />
-INPUT Passenger Weight
-<br />
-<input type = "number" name = "weight" min = "0" max = "500" id = "pasWeight">
-</form>
-
-<p style="margin-left: auto; margin-right: auto; text-align:center">
-SELECT Fuel Quantity
-
-<form style="text-aline: center; ">
-<select name="name" id = "getFuel">
-<option selected value="1">143L</option>
-<option value="2">反正也不会低于143是吧？</option>
-</select>
-</form>
-
-<form style="text-aline: center;">
-<p>INPUT Fuel Burn</p>
-<input type = "number" name = "weight" min = "0" max = "150" id = "fuelCos">
-</form>
-
-<form style="text-aline: center;">
-<p>INPUT Fuel Burn 2</p>
-<input type = "number" name = "weight" min = "0" max = "150" id = "fuelCos2">
-<h6>*此处不填不会报错</h6>
-</form>
-
-
-
-<p style="margin-left: auto; margin-right: auto; text-align:center">
-<br />
-<input value="提交" type="button" onclick="gettype()"/>
-</p>
+<div class="main-container">
+    <div class="main wrapper clearfix">
+     <div class="header-container">
+            <header class="wrapper clearfix">
+      <h1 class="title">破烂计算器</h1>
+      </header>
+    </div>
+    
+      <h6>*仍旧在测试阶段，有问题求反馈（x</h6>
+   		<h6>如果提交后看不到完整表格请缩小页面</h6>
+    
+    <p style="margin-left: auto; margin-right: auto; text-align:center">
+    SELECT Registration Number
+    
+    <form style="text-aline: center; ">
+    <div class="form-group">
+        <select name="name" id = "getName"  class="form-control">
+            <option selected value = "0" ></option>
+            <option value="1">AWX</option>
+            <option value="2">AYX</option>
+            <option value="3">BAW</option>
+            <option value="4">BBJ</option>
+            <option value="5">BBX</option>
+            <option value="6">BCB</option>
+            <option value="7">BCL</option>
+            <option value="8">BDP</option>
+            <option value="9">BDZ</option>
+            <option value="10">BGQ</option>
+            <option value="11">ZIB</option>
+            <option value="12">ZIJ</option>
+            <option value="13">ZIL</option>
+            <option value="14">ZIM</option>
+            <option value="15">ZIV</option>
+            <option value="16">ZTA</option>
+            <option value="17">ZTB</option>
+            <option value="18">ZTD</option>
+            <option value="19">ZTE</option>
+            <option value="20">ZTF</option>
+            <option value="21">ZTH</option>
+            <option value="22">ZTJ</option>
+            <option value="23">ZTK</option>
+            <option value="24">ZTL</option>
+            <option value="25">ZTM</option>
+            <option value="26">ZTN</option>
+            <option value="27">ZTO</option>
+            <option value="28">ZTP</option>
+            <option value="29">ZTS</option>
+            <option value="30">ZTT</option>
+            <option value="31">ZTV</option>
+            <option value="32">ZTX</option>
+            <option value="33">ZTY</option>
+            <option value="34">ZYM</option>
+            <option value="35">ZYT</option>
+            <option value="36">ZYV</option>
+        </select>
+     </div>
+    </form>
+    
+    <p style="margin-left: auto; margin-right: auto; text-align:center">
+    SELECT Baggage Weight
+    
+    <form style="text-aline: center; ">
+    <div class="form-group">
+        <select name="name" class="form-control" id = "getWeight">
+            <option selected value = "1">0KG</option>
+            <option value="2">5KG</option>
+            <option value="3">10KG</option>
+            <option value="4">15KG</option>
+        </select>
+    </div>
+    </form>
+    
+    <form style="text-aline: center;">
+        <br />
+        INPUT Passenger Weight
+        <br />
+         <div class="form-group">
+         <input type="number" placeholder="请输入重量（kg）" class="form-control" id = "pasWeight">
+         </div>
+        
+    </form>
+    
+    <p style="margin-left: auto; margin-right: auto; text-align:center">
+    SELECT Fuel Quantity
+    
+    <form style="text-aline: center; ">
+    <div class="form-group">
+        <select name="name" id = "getFuel"  class="form-control">
+            <option selected value="1">143L</option>
+            <option value="2">反正也不会低于143是吧？</option>
+        </select>
+     </div>
+    </form>
+    
+    <form style="text-aline: center;">
+        <p>INPUT Fuel Burn</p>
+         <div class="form-group">
+         <input type="number" placeholder="请输入燃油消耗（kg）" class="form-control" id = "fuelCos">
+         </div>
+    </form>
+    
+    <form style="text-aline: center;">
+        <p>INPUT Fuel Burn 2</p><div class="form-group">
+         <input type="number" placeholder="请输入燃油消耗（kg）" class="form-control" id = "fuelCos2">
+         </div>
+            <h6>*此处不填不会报错</h6>
+    </form>
+    
+    
+    
+    <p style="margin-left: auto; margin-right: auto; text-align:center">
+    <br />
+    <input value="提交" type="button" onClick="gettype()"/>
+    </p>
+     </div> <!-- #main -->
+</div> <!-- #main-container -->
 </body>
 </html>
